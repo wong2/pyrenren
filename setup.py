@@ -4,14 +4,14 @@ from setuptools import setup
 
 
 setup(
-    name='renren-client',
+    name='pyrenren',
     version='1.0',
-    url='https://github.com/wong2/renren-client',
+    url='https://github.com/wong2/pyrenren',
     license='MIT',
     author='wong2',
     author_email='wonderfuly@gmail.com',
-    description='RenRen client',
-    py_modules=['renren_client'],
+    description='Python RenRen Client',
+    py_modules=['pyrenren'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',

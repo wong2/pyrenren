@@ -69,7 +69,7 @@ def encrypt_string(e, m, s):
 
 
 # 人人各种接口
-class RenRenClient:
+class RenRen:
 
     def __init__(self, email=None, pwd=None):
         self.session = requests.Session()
@@ -230,5 +230,5 @@ class RenRenClient:
 
 
 if __name__ == '__main__':
-    renren = RenRenClient('email', 'password')
+    renren = RenRen('email', 'password')
     print renren.get_user_info()
