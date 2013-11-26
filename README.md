@@ -5,3 +5,10 @@
 ### Install
 
 `pip install pyrenren`
+
+### Example
+
+    from pyrenren import RenRen
+
+    renren = RenRen('email', 'password')
+    print renren.get_user_info()
