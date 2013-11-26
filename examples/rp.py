@@ -1,7 +1,6 @@
 #-*-coding:utf-8-*-
 
-# 人人刷人品
-
+# 人人刷人品脚本
 
 import time
 from datetime import datetime
