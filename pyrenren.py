@@ -37,7 +37,6 @@ import os
 import json
 import random
 import requests
-from pyquery import PyQuery
 
 
 # 人人的登录密码加密算法
@@ -206,27 +205,6 @@ class RenRen:
     # 访问某人页面
     def visit(self, uid):
         self.get('http://www.renren.com/' + str(uid) + '/profile')
-
-    # 根据关键词搜索最新状态(全站)
-    def search_status(self, keyword, max_length=20):
-        url = 'http://browse.renren.com/s/status?offset=0&sort=1&range=0&q=%s&l=%d' % (keyword, max_length)
-        r = self.session.get(url, timeout=5)
-        status_elements = PyQuery(r.text)('.list_status .status_content')
-        id_pattern  = re.compile("forwardDoing\('(\d+)','(\d+)'\)")
-        results = []
-        for index, _ in enumerate(status_elements):
-            status_element = status_elements.eq(index)
-
-            # 跳过转发的
-            if status_element('.status_root_msg'):
-                continue
-
-            status_element = status_element('.status_content_footer')
-            status_time = status_element('span').text()
-            m = id_pattern.search(status_element('.share_status').attr('onclick'))
-            status_id, user_id = m.groups()
-            results.append( (int(user_id), int(status_id), status_time) )
-        return results
 
 
 if __name__ == '__main__':

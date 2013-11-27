@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='pyrenren',
-    version='1.0',
+    version='1.1',
     url='https://github.com/wong2/pyrenren',
     license='MIT',
     author='wong2',
@@ -16,7 +16,6 @@ setup(
     include_package_data=True,
     platforms='any',
     install_requires=[
-        'requests',
-        'pyquery'
+        'requests'
     ]
 )
