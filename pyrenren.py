@@ -133,7 +133,11 @@ class RenRen:
         return r.json()
 
     def get_token(self, html=''):
-        p = re.compile("get_check:'(.*)',get_check_x:'(.*)',env")
+        # Format before renren v7
+        # p = re.compile("get_check:'(.*)',get_check_x:'(.*)',env")
+
+        # Format after renren v7
+        p = re.compile("requestToken : '(.*)',\n_rtk : '(.*)'\n};")
 
         if not html:
             r = self.get('http://www.renren.com')
