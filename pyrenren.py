@@ -70,7 +70,7 @@ def encrypt_string(e, m, s):
 
 
 # 人人各种接口
-class RenRen:
+class RenRen(object):
 
     def __init__(self, email=None, pwd=None):
         self.session = requests.Session()
