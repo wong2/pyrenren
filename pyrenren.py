@@ -35,6 +35,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import re
 import os
 import json
+import time
+import urllib
 import random
 import requests
 
@@ -133,7 +135,7 @@ class RenRen:
         return r.json()
 
     def get_token(self, html=''):
-        p = re.compile("get_check:'(.*)',get_check_x:'(.*)',env")
+        p = re.compile("requestToken : '(.*)',\n_rtk : '(.*)'\n")
 
         if not html:
             r = self.get('http://www.renren.com')
@@ -206,7 +208,40 @@ class RenRen:
     def visit(self, uid):
         self.get('http://www.renren.com/' + str(uid) + '/profile')
 
+    def _get_chat_payload(self, data):
+        payload_tmpl = u'''
+          <message fname="{from_name}" from="{from_uid}@talk.m.renren.com" to="{to_uid}@talk.m.renren.com" type="chat">
+            <richbody type="dialog" localid="{timestamp}">
+              <font>{msg}</font>
+            </richbody>
+          </message>\n\u0000&{token}
+        '''
+
+        data.update({
+            'token': urllib.urlencode(self.token),
+            'timestamp': int(time.time()*1000),
+        })
+
+        payload = payload_tmpl.format(**data).encode('utf-8').strip()
+        return payload
+
+    def send_message(self, to_uid, msg):
+        user_info = self.get_user_info()
+        from_name = user_info['hostname']
+        from_uid = user_info['hostid']
+
+        payload = self._get_chat_payload({
+            'from_name': from_name,
+            'from_uid': from_uid,
+            'to_uid': to_uid,
+            'msg': msg
+        })
+
+        # init wpi cookie
+        self.get('http://wpi.renren.com/comet_get', data={'mid': 0})
+        r = self.session.post('http://wpi.renren.com/muc_chat', data=payload)
+        return r.status_code == 200
+
 
 if __name__ == '__main__':
     renren = RenRen('email', 'password')
-    print renren.get_user_info()
